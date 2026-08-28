@@ -335,13 +335,13 @@
         .only-print { display: none; white-space: pre-wrap; font-size: 13px; line-height: 1.5; padding: 4px; border: 1px solid #dcdfe6; border-radius: 6px; min-height: 60px; }
 
         /* =========================================
-           高質感 1 頁 A4 列印樣式 (精準滿版不跨頁) 
+           高質感 1 頁 A4 列印樣式 (釋放極限空間版) 
            ========================================= */
-        @page { size: A4 portrait; margin: 6mm; } /* 微調邊界，爭取最後一點點空間 */
+        @page { size: A4 portrait; margin: 5mm; } 
         @media print {
             /* 列印時隱藏輸入框與所有按鈕、標籤，只顯示純文字區塊 */
             .no-print { display: none !important; }
-            .only-print { display: block !important; border: none !important; padding: 0 !important; font-size: 13px !important; line-height: 1.5 !important; min-height: 40px !important; margin-bottom: 0 !important; }
+            .only-print { display: block !important; border: none !important; padding: 0 !important; font-size: 12px !important; line-height: 1.4 !important; min-height: 20px !important; margin-bottom: 0 !important; }
             
             body { background-color: #ffffff !important; padding: 0 !important; margin: 0 !important; -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
             .container { box-shadow: none !important; padding: 0 !important; max-width: 100% !important; width: 100% !important; margin: 0 !important; }
@@ -349,39 +349,46 @@
             /* 隱藏標籤與按鈕 */
             .btn-rewrite, .btn-submit, .btn-reset, .button-group, .tag-category-title, .tag-container, .btn-help-inline { display: none !important; }
             
-            /* 稍微收緊標題的間距，爭取垂直空間 */
-            h1 { margin: 0 0 6px 0 !important; font-size: 18px !important; padding-bottom: 4px !important; border-bottom-width: 2px !important; }
-            .section-title { margin: 8px 0 4px 0 !important; padding: 4px 8px !important; font-size: 13px !important; }
-            .three-column-grid { display: grid !important; grid-template-columns: repeat(3, 1fr) !important; gap: 8px !important; margin-bottom: 8px !important; }
-            .mini-card { padding: 8px !important; }
+            /* 極限壓縮標題的間距 */
+            h1 { margin: 0 0 4px 0 !important; font-size: 16px !important; padding-bottom: 2px !important; border-bottom-width: 1px !important; }
+            .section-title { margin: 4px 0 2px 0 !important; padding: 2px 4px !important; font-size: 12px !important; }
+            .three-column-grid { display: grid !important; grid-template-columns: repeat(3, 1fr) !important; gap: 4px !important; margin-bottom: 4px !important; }
+            .mini-card { padding: 4px !important; }
             
-            /* 第一區塊：同列顯示與對齊 */
-            .form-grid { display: flex !important; justify-content: flex-start !important; gap: 12px !important; align-items: flex-end !important; margin-bottom: 5px !important; }
+            /* 第一區塊：同列顯示與對齊，極限壓縮間距 */
+            .form-grid { display: flex !important; justify-content: flex-start !important; gap: 6px !important; align-items: flex-end !important; margin-bottom: 2px !important; }
             
-            /* 去除所有邊框，純文字顯示並恢復正常字級 */
+            /* 去除所有邊框，純文字顯示並縮小字級 */
             input, select, textarea {
                 border: none !important; background: transparent !important;
                 appearance: none !important; -webkit-appearance: none !important;
                 color: #000 !important; font-weight: bold !important;
-                padding: 0 !important; margin: 0 !important; width: auto !important; box-shadow: none !important; font-size: 12px !important;
+                padding: 0 !important; margin: 0 !important; width: auto !important; box-shadow: none !important; font-size: 11px !important;
             }
             
             /* 年月/級別號位 緊密靠近 */
             .date-flex, .progress-flex { display: flex !important; justify-content: flex-start !important; gap: 2px !important; align-items: center !important;}
             .date-flex select, .progress-flex select { flex: none !important; width: auto !important; }
             
-            /* 評估項目完美齊頭對齊 (鎖死標籤寬度 115px) */
-            .eval-row { display: flex !important; justify-content: flex-start !important; align-items: center !important; gap: 2px !important; margin-bottom: 4px !important; }
-            .eval-row label { width: 115px !important; flex-shrink: 0 !important; text-align: left !important; font-size: 11px !important; margin: 0 !important; }
-            .eval-row select { font-size: 11px !important; width: auto !important; text-align: left !important; }
+            /* 課題與重點壓縮 */
+            .topic-display-row { margin-bottom: 2px !important; }
+            .eval-section-header { margin: 4px 0 2px 0 !important; padding: 2px 4px !important; font-size: 11px !important; }
+
+            /* 評估項目完美齊頭對齊並極限壓縮上下行距 */
+            .eval-row { display: flex !important; justify-content: flex-start !important; align-items: center !important; gap: 2px !important; margin-bottom: 1px !important; }
+            .eval-row label { width: 115px !important; flex-shrink: 0 !important; text-align: left !important; font-size: 10px !important; margin: 0 !important; }
+            .eval-row select { font-size: 10px !important; width: auto !important; text-align: left !important; }
             
-            /* 焦點學習框維持純文字高度自動 */
-            textarea.focus-display-input { resize: none !important; border: 1px solid #e2e8f0 !important; padding: 4px !important; font-size: 10px !important; min-height: 28px !important; overflow: visible !important; }
+            /* 焦點學習框維持純文字高度自動，壓縮 padding */
+            textarea.focus-display-input { resize: none !important; border: 1px solid #e2e8f0 !important; padding: 2px !important; font-size: 9px !important; min-height: 22px !important; overflow: visible !important; }
             
-            /* 圖表高度微縮，釋放最後的空間給下方的綜合評語 */
-            .chart-box { height: 170px !important; padding: 6px !important; justify-content: flex-start !important; margin-bottom: 0 !important;}
-            .chart-box h4 { margin: 0 0 4px 0 !important; font-size: 12px !important; }
-            .chart-box canvas { max-height: 140px !important; width: 100% !important; margin-top: 0 !important; }
+            .trend-row { margin-top: 2px !important; }
+            .overgrade-status { margin-top: 2px !important; padding: 2px !important; font-size: 10px !important;}
+
+            /* 大幅壓縮圖表高度，釋放大量空間給下方的綜合評語 */
+            .chart-box { height: 135px !important; padding: 4px !important; justify-content: flex-start !important; margin-bottom: 0 !important;}
+            .chart-box h4 { margin: 0 0 2px 0 !important; font-size: 11px !important; }
+            .chart-box canvas { max-height: 115px !important; width: 100% !important; margin-top: 0 !important; }
         }
     </style>
 </head>
