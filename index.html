@@ -335,13 +335,13 @@
         .only-print { display: none; white-space: pre-wrap; font-size: 13px; line-height: 1.5; padding: 4px; border: 1px solid #dcdfe6; border-radius: 6px; min-height: 60px; }
 
         /* =========================================
-           高質感 1 頁 A4 列印樣式 (完美滿版比例版) 
+           高質感 1 頁 A4 列印樣式 (精準滿版不跨頁) 
            ========================================= */
-        @page { size: A4 portrait; margin: 8mm; } /* 邊距適中，維持列印安全區 */
+        @page { size: A4 portrait; margin: 6mm; } /* 微調邊界，爭取最後一點點空間 */
         @media print {
             /* 列印時隱藏輸入框與所有按鈕、標籤，只顯示純文字區塊 */
             .no-print { display: none !important; }
-            .only-print { display: block !important; border: none !important; padding: 0 !important; font-size: 13px !important; line-height: 1.6 !important; min-height: 100px !important; margin-bottom: 0 !important; }
+            .only-print { display: block !important; border: none !important; padding: 0 !important; font-size: 13px !important; line-height: 1.5 !important; min-height: 40px !important; margin-bottom: 0 !important; }
             
             body { background-color: #ffffff !important; padding: 0 !important; margin: 0 !important; -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
             .container { box-shadow: none !important; padding: 0 !important; max-width: 100% !important; width: 100% !important; margin: 0 !important; }
@@ -349,10 +349,10 @@
             /* 隱藏標籤與按鈕 */
             .btn-rewrite, .btn-submit, .btn-reset, .button-group, .tag-category-title, .tag-container, .btn-help-inline { display: none !important; }
             
-            /* 放大的標題與區塊間距，讓內容自然填滿畫面 */
-            h1 { margin: 0 0 10px 0 !important; font-size: 20px !important; padding-bottom: 6px !important; border-bottom-width: 2px !important; }
-            .section-title { margin: 12px 0 8px 0 !important; padding: 4px 8px !important; font-size: 14px !important; }
-            .three-column-grid { display: grid !important; grid-template-columns: repeat(3, 1fr) !important; gap: 8px !important; margin-bottom: 10px !important; }
+            /* 稍微收緊標題的間距，爭取垂直空間 */
+            h1 { margin: 0 0 6px 0 !important; font-size: 18px !important; padding-bottom: 4px !important; border-bottom-width: 2px !important; }
+            .section-title { margin: 8px 0 4px 0 !important; padding: 4px 8px !important; font-size: 13px !important; }
+            .three-column-grid { display: grid !important; grid-template-columns: repeat(3, 1fr) !important; gap: 8px !important; margin-bottom: 8px !important; }
             .mini-card { padding: 8px !important; }
             
             /* 第一區塊：同列顯示與對齊 */
@@ -378,10 +378,10 @@
             /* 焦點學習框維持純文字高度自動 */
             textarea.focus-display-input { resize: none !important; border: 1px solid #e2e8f0 !important; padding: 4px !important; font-size: 10px !important; min-height: 28px !important; overflow: visible !important; }
             
-            /* 放大圖表高度，填補版面中段空間 */
-            .chart-box { height: 185px !important; padding: 6px !important; justify-content: flex-start !important; margin-bottom: 0 !important;}
+            /* 圖表高度微縮，釋放最後的空間給下方的綜合評語 */
+            .chart-box { height: 170px !important; padding: 6px !important; justify-content: flex-start !important; margin-bottom: 0 !important;}
             .chart-box h4 { margin: 0 0 4px 0 !important; font-size: 12px !important; }
-            .chart-box canvas { max-height: 155px !important; width: 100% !important; margin-top: 0 !important; }
+            .chart-box canvas { max-height: 140px !important; width: 100% !important; margin-top: 0 !important; }
         }
     </style>
 </head>
