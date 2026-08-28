@@ -219,64 +219,6 @@
         .chart-box canvas {
             max-height: 180px !important;
         }
-        
-        .tag-category-title {
-            font-size: 12px;
-            font-weight: bold;
-            color: #2d3748;
-            margin: 10px 0 6px 0;
-            padding-left: 6px;
-            border-left: 3px solid #cbd5e1;
-        }
-        .tag-container {
-            display: flex;
-            flex-wrap: nowrap;
-            overflow-x: auto;
-            gap: 8px;
-            padding-bottom: 8px;
-            margin-bottom: 8px;
-            scroll-behavior: smooth;
-            -webkit-overflow-scrolling: touch;
-        }
-        .tag-container::-webkit-scrollbar {
-            height: 4px;
-        }
-        .tag-container::-webkit-scrollbar-thumb {
-            background: #cbd5e1;
-            border-radius: 4px;
-        }
-        .tag-container::-webkit-scrollbar-track {
-            background: #f1f5f9;
-        }
-        .tag-btn {
-            background: #f1f5f9;
-            border: 1px solid #cbd5e1;
-            padding: 4px 10px;
-            border-radius: 12px;
-            font-size: 12px;
-            cursor: pointer;
-            user-select: none;
-            white-space: nowrap;
-            flex-shrink: 0;
-            transition: all 0.15s ease;
-        }
-        .tag-btn.trait.active { background: #8b5cf6; color: #fff; border-color: #8b5cf6; }
-        .tag-btn.positive.active { background: #3b82f6; color: #fff; border-color: #3b82f6; }
-        .tag-btn.improve.active { background: #f97316; color: #fff; border-color: #f97316; }
-
-        .btn-rewrite {
-            background: #10b981;
-            color: white;
-            border: none;
-            padding: 4px 10px;
-            border-radius: 6px;
-            font-size: 12px;
-            cursor: pointer;
-            font-weight: bold;
-            transition: background 0.2s;
-        }
-        .btn-rewrite:hover { background: #059669; }
-
         .modal-overlay {
             display: none;
             position: fixed;
@@ -295,7 +237,6 @@
             max-height: 85vh;
             overflow-y: auto;
         }
-
         .button-group {
             display: flex;
             gap: 12px;
@@ -340,7 +281,7 @@
             
             body { background-color: #ffffff !important; padding: 0 !important; margin: 0 !important; -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
             .container { box-shadow: none !important; padding: 0 !important; max-width: 100% !important; width: 100% !important; }
-            .btn-rewrite, .btn-submit, .btn-reset, .button-group, .tag-category-title span, .btn-help-inline, .tag-container { display: none !important; }
+            .btn-submit, .btn-reset, .button-group, .btn-help-inline { display: none !important; }
             
             h1 { margin: 0 0 6px 0 !important; font-size: 16px !important; padding-bottom: 2px !important; border-bottom-width: 1px !important; }
             .section-title { margin: 8px 0 4px 0 !important; padding: 2px 6px !important; font-size: 12px !important; }
@@ -386,7 +327,7 @@
             <div class="form-grid">
                 <div class="form-group" style="flex: 1; min-width: 100px;">
                     <label for="studentName">學生姓名</label>
-                    <input type="text" id="studentName" placeholder="例如：張小明" oninput="updateComments()">
+                    <input type="text" id="studentName" placeholder="例如：張小明" oninput="updatePageTitle()">
                 </div>
                 <div class="form-group" style="flex: 1; min-width: 90px;">
                     <label for="grade">目前年級</label>
@@ -622,58 +563,15 @@
                 </div>
             </div>
 
-            <!-- 第四區塊：綜合評語點選器 -->
+            <!-- 第四區塊：綜合評語 -->
             <div class="section-title">
-                <span>第四區塊：綜合評語點選器</span>
-                <button type="button" class="btn-rewrite" onclick="regenerateParagraph()">🎲 替換/重寫本段文字</button>
-            </div>
-
-            <div class="tag-category-title" style="border-left-color: #8b5cf6;"><span>👤 個人特質與學習態度（👉 橫滑更多）：</span></div>
-            <div class="tag-container">
-                <div class="tag-btn trait" onclick="toggleTag(this, '態度積極主動', 'trait', '學習態度非常積極主動，展現強烈的求知熱情')">+ 態度積極主動</div>
-                <div class="tag-btn trait" onclick="toggleTag(this, '學習專注細心', 'trait', '課堂學習專注力持久，解題過程相當細心謹慎')">+ 學習專注細心</div>
-                <div class="tag-btn trait" onclick="toggleTag(this, '急躁容易粗心', 'trait', '個性較為急躁，解題時容易因速度快而出現粗心狀況')">+ 急躁容易粗心</div>
-                <div class="tag-btn trait" onclick="toggleTag(this, '害怕面對新題', 'trait', '面對不熟悉的新難題時，容易產生少許畏懼與退縮心理')">+ 害怕面對新題</div>
-                <div class="tag-btn trait" onclick="toggleTag(this, '勇於接受挑戰', 'trait', '勇於接受新課題的挑戰，不畏懼遇到有難度的題型')">+ 勇於接受挑戰</div>
-                <div class="tag-btn trait" onclick="toggleTag(this, '挫折韌性度高', 'trait', '遇到挫折時的耐受度高，具備良好的學習韌性')">+ 挫折韌性度高</div>
-                <div class="tag-btn trait" onclick="toggleTag(this, '主動尋求解答', 'trait', '遇到瓶頸時能主動尋求解題策略與參考範例')">+ 主動尋求解答</div>
-                <div class="tag-btn trait" onclick="toggleTag(this, '學習較為沉靜', 'trait', '上課表現較為沉靜，需要多給予引導與發問鼓勵')">+ 學習較為沉靜</div>
-                <div class="tag-btn trait" onclick="toggleTag(this, '樂於展現自信', 'trait', '對自己的學習能力充滿信心，且樂於展現學習成果')">+ 樂於展現自信</div>
-                <div class="tag-btn trait" onclick="toggleTag(this, '缺乏學習信心', 'trait', '對於新階段教材較缺乏信心，需要多加鼓勵與肯定')">+ 缺乏學習信心</div>
-            </div>
-
-            <div class="tag-category-title" style="border-left-color: #3b82f6;"><span>✨ 學科能力與優質表現（👉 橫滑更多）：</span></div>
-            <div class="tag-container">
-                <div class="tag-btn positive" onclick="toggleTag(this, '邏輯思維優異', 'positive', '具備良好的邏輯思維能力，概念轉化與理解迅速')">+ 邏輯思維優異</div>
-                <div class="tag-btn positive" onclick="toggleTag(this, '心算反應敏捷', 'positive', '心算能力發展成熟，計算反應敏捷且節奏明快')">+ 心算反應敏捷</div>
-                <div class="tag-btn positive" onclick="toggleTag(this, '音讀順暢流暢', 'positive', '音讀朗讀非常順暢，且能展現良好的節奏與情感')">+ 音讀順暢流暢</div>
-                <div class="tag-btn positive" onclick="toggleTag(this, '閱讀理解力優', 'positive', '文章閱讀理解與擷取核心重點的能力相當優異')">+ 閱讀理解力優</div>
-                <div class="tag-btn positive" onclick="toggleTag(this, '自主訂正能力', 'positive', '具備良好的訂正習慣，能自主發現錯誤並進行修正')">+ 自主訂正能力</div>
-                <div class="tag-btn positive" onclick="toggleTag(this, '書寫端正工整', 'positive', '文字與數字的書寫相當端正工整，版面清晰漂亮')">+ 書寫端正工整</div>
-                <div class="tag-btn positive" onclick="toggleTag(this, '新觀念吸收快', 'positive', '對於新詞彙與新概念的吸收能力強，記憶力佳')">+ 新觀念吸收快</div>
-                <div class="tag-btn positive" onclick="toggleTag(this, '題型適應力強', 'positive', '對於題型的靈活變化具備極佳的適應與應變能力')">+ 題型適應力強</div>
-                <div class="tag-btn positive" onclick="toggleTag(this, '算式條理分明', 'positive', '解題過程與算式書寫非常有條理，邏輯脈絡清晰')">+ 算式條理分明</div>
-                <div class="tag-btn positive" onclick="toggleTag(this, '遵守作業規範', 'positive', '能確實遵循每日定時寫作業的規範，態度負責')">+ 遵守作業規範</div>
-            </div>
-
-            <div class="tag-category-title" style="border-left-color: #f97316;"><span>💡 未來引導與具體建議（👉 橫滑更多）：</span></div>
-            <div class="tag-container">
-                <div class="tag-btn improve" onclick="toggleTag(this, '建立定時習慣', 'improve', '建議在家中培養每日定時寫作業的習慣，以維持穩定學習節奏')">+ 建立定時習慣</div>
-                <div class="tag-btn improve" onclick="toggleTag(this, '放慢速度減錯', 'improve', '建議書寫與計算時適度放慢速度，以減少急躁帶來的無謂失誤')">+ 放慢速度減錯</div>
-                <div class="tag-btn improve" onclick="toggleTag(this, '多做音讀思考', 'improve', '遇到不熟悉的難題時，鼓勵多進行音讀朗讀與自我思考')">+ 多做音讀思考</div>
-                <div class="tag-btn improve" onclick="toggleTag(this, '增加自我檢查', 'improve', '作業寫完後若能養成自我檢查的習慣，整體表現會更加完善')">+ 增加自我檢查</div>
-                <div class="tag-btn improve" onclick="toggleTag(this, '加強課外朗讀', 'improve', '建議課餘時間多進行文章朗讀，幫助提升音讀流暢度與語感')">+ 加強課外朗讀</div>
-                <div class="tag-btn improve" onclick="toggleTag(this, '調整握筆姿勢', 'improve', '可稍微調整書寫姿勢與握筆力道，讓書寫過程更為省力順暢')">+ 調整握筆姿勢</div>
-                <div class="tag-btn improve" onclick="toggleTag(this, '參考例題學習', 'improve', '面對錯題或新題型時，建議先細心比對與參考例題，培養獨立思考與學習的能力')">+ 參考例題學習</div>
-                <div class="tag-btn improve" onclick="toggleTag(this, '分段小量練習', 'improve', '建議採取每日分段小量練習的方式，保持思考敏銳度又不失專注')">+ 分段小量練習</div>
-                <div class="tag-btn improve" onclick="toggleTag(this, '試著自行讀題', 'improve', '可多嘗試自行閱讀題目說明與指示，逐步提升獨立閱讀理解力')">+ 試著自行讀題</div>
-                <div class="tag-btn improve" onclick="toggleTag(this, '保持耐心信心', 'improve', '遭遇新階段難題時請保持耐心與信心，相信自己的解題潛能')">+ 保持耐心信心</div>
+                <span>第四區塊：綜合評語</span>
             </div>
 
             <!-- 自動長高、無拖拉游標的文字框，並加入列印專屬切換 -->
             <div class="form-group">
                 <!-- 螢幕編輯專用：列印時會隱藏 -->
-                <textarea id="comments" class="no-print" rows="3" placeholder="可自行輸入，或點選上方標籤將自動組合成一篇對家長說明的流暢對話，亦可點擊右上方『🎲 替換/重寫』切換語氣..." 
+                <textarea id="comments" class="no-print" rows="4" placeholder="請在此輸入對學生的綜合評語與建議..." 
                 style="resize: none; overflow: hidden;" 
                 oninput="this.style.height = ''; this.style.height = this.scrollHeight + 'px'"></textarea>
                 
@@ -716,12 +614,6 @@
         };
 
         const chartInstances = {};
-
-        let selectedTags = {
-            trait: [],
-            positive: [],
-            improve: []
-        };
 
         window.onload = function() {
             initYearDropdown();
@@ -1171,19 +1063,8 @@
             };
         }
 
-        function toggleTag(btn, text, category, sentence) {
-            btn.classList.toggle('active');
-            const isActive = btn.classList.contains('active');
-            
-            if (isActive) {
-                selectedTags[category].push({ text, sentence });
-            } else {
-                selectedTags[category] = selectedTags[category].filter(item => item.text !== text);
-            }
-            updateComments();
-        }
-
-        function updateComments() {
+        // 當輸入學生姓名時，同步更新網頁標題
+        function updatePageTitle() {
             let fullName = document.getElementById('studentName').value.trim();
             const pageTitleEl = document.getElementById('pageTitle');
             
@@ -1192,51 +1073,6 @@
             } else {
                 pageTitleEl.textContent = `KUMON 學生學習診斷與發展報告`;
             }
-
-            let callName = "";
-            if (fullName.length > 0) {
-                callName = fullName.length >= 2 ? fullName.slice(1) : fullName;
-            }
-
-            let parts = [];
-            
-            ['trait', 'positive', 'improve'].forEach(cat => {
-                if (selectedTags[cat].length > 0) {
-                    const sentences = selectedTags[cat].map(item => item.sentence);
-                    parts.push(sentences.join('，'));
-                }
-            });
-
-            if (parts.length === 0) {
-                document.getElementById('comments').value = "";
-                document.getElementById('comments').style.height = 'auto'; // Reset height
-                return;
-            }
-
-            let combined = parts.join('。') + '。';
-            let resultText = "";
-
-            if (callName) {
-                resultText = `家長好，關於${callName}近期在教室的學習狀況：\n${callName}在課堂上${combined}`;
-            } else {
-                resultText = `家長好，關於學生近期在教室的學習狀況：\n學生在課堂上${combined}`;
-            }
-            
-            const commentsEl = document.getElementById('comments');
-            commentsEl.value = resultText;
-            
-            // 自動計算撐開高度，避免列印時截斷
-            commentsEl.style.height = 'auto';
-            commentsEl.style.height = commentsEl.scrollHeight + 'px';
-        }
-
-        function regenerateParagraph() {
-            ['trait', 'positive', 'improve'].forEach(cat => {
-                if (selectedTags[cat].length > 0) {
-                    selectedTags[cat].sort(() => Math.random() - 0.5);
-                }
-            });
-            updateComments();
         }
 
         function openHelpModal(sub) {
@@ -1253,7 +1089,7 @@
                     <p>• <strong>心算能力：</strong> 直式筆算不寫進借位記號；能心算求得約分之最大公因數與通分之最小公倍數。</p>
                     <p>• <strong>理解能力：</strong> 能仔細看例題/導入獨力自學新課題，面對帶星號難題與填空展現高自學理解力。</p>
                     <p>• <strong>訂正能力：</strong> 能推敲計算過程，迅速發現錯誤並只擦掉寫錯的數字局部修正。</p>
-                    <p>• <strong>驗算能力：</strong> 具備主動驗算與自我檢查意識，解題過程能邊思考邊驗證答案正確性。</p>
+                    <p>• <strong>驗算能力：</strong> 具備主持驗算與自我檢查意識，解題過程能邊思考邊驗證答案正確性。</p>
                     <p>• <strong>書寫能力：</strong> 能書寫最簡潔中間步驟，並自如運用交換律、分配律等技巧簡化計算。</p>
                 `;
             } else if (sub === 'eng') {
@@ -1329,9 +1165,6 @@
                     document.getElementById(`future_status_${sub}`).textContent = "請先選擇年級與半年後進度";
                     document.getElementById(`future_status_${sub}`).style.color = "#a0aec0";
                 });
-
-                selectedTags = { trait: [], positive: [], improve: [] };
-                document.querySelectorAll('.tag-btn.active').forEach(btn => btn.classList.remove('active'));
                 
                 renderCharts();
                 window.scrollTo({ top: 0, behavior: 'smooth' });
