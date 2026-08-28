@@ -328,9 +328,16 @@
         }
         .btn-reset:hover { background: #475569; }
 
+        /* 列印專用純文字區塊預設隱藏 */
+        .only-print { display: none; white-space: pre-wrap; font-size: 13px; line-height: 1.5; padding: 4px; border: 1px solid #dcdfe6; border-radius: 6px; min-height: 60px; }
+
         /* 高質感 1 頁 A4 列印樣式 (極致壓縮版) */
         @page { size: A4 portrait; margin: 6mm; }
         @media print {
+            /* 列印時隱藏輸入框，顯示純文字區塊 */
+            .no-print { display: none !important; }
+            .only-print { display: block !important; border: none !important; padding: 0 !important; font-size: 11px !important; }
+            
             body { background-color: #ffffff !important; padding: 0 !important; margin: 0 !important; -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
             .container { box-shadow: none !important; padding: 0 !important; max-width: 100% !important; width: 100% !important; }
             .btn-rewrite, .btn-submit, .btn-reset, .button-group, .tag-category-title span, .btn-help-inline, .tag-container { display: none !important; }
@@ -360,9 +367,8 @@
             .eval-row label { width: 115px !important; flex-shrink: 0 !important; text-align: left !important; font-size: 10px !important; margin: 0 !important; }
             .eval-row select { font-size: 10px !important; width: auto !important; text-align: left !important; }
             
-            /* 確保評語文字完整呈現，不會被切斷或捲動 */
-            textarea#comments { height: auto !important; overflow: visible !important; white-space: pre-wrap !important; font-size: 11px !important; line-height: 1.4 !important; }
-            textarea.focus-display-input { resize: none !important; border: 1px solid #e2e8f0 !important; padding: 2px !important; font-size: 9px !important; min-height: 24px !important; }
+            /* 焦點學習框維持純文字高度自動 */
+            textarea.focus-display-input { resize: none !important; border: 1px solid #e2e8f0 !important; padding: 2px !important; font-size: 9px !important; min-height: 24px !important; overflow: visible !important; }
             
             /* 圖表縮小讓出空間 */
             .chart-box { height: 150px !important; padding: 4px !important; }
@@ -664,11 +670,15 @@
                 <div class="tag-btn improve" onclick="toggleTag(this, '保持耐心信心', 'improve', '遭遇新階段難題時請保持耐心與信心，相信自己的解題潛能')">+ 保持耐心信心</div>
             </div>
 
-            <!-- 自動長高、無拖拉游標的文字框 -->
+            <!-- 自動長高、無拖拉游標的文字框，並加入列印專屬切換 -->
             <div class="form-group">
-                <textarea id="comments" rows="3" placeholder="可自行輸入，或點選上方標籤將自動組合成一篇對家長說明的流暢對話，亦可點擊右上方『🎲 替換/重寫』切換語氣..." 
+                <!-- 螢幕編輯專用：列印時會隱藏 -->
+                <textarea id="comments" class="no-print" rows="3" placeholder="可自行輸入，或點選上方標籤將自動組合成一篇對家長說明的流暢對話，亦可點擊右上方『🎲 替換/重寫』切換語氣..." 
                 style="resize: none; overflow: hidden;" 
                 oninput="this.style.height = ''; this.style.height = this.scrollHeight + 'px'"></textarea>
+                
+                <!-- PDF列印專用：平時隱藏，列印時才會顯示，確保沒有任何符號且文字 100% 呈現 -->
+                <div id="comments_print" class="only-print"></div>
             </div>
 
             <!-- 底部按鈕雙欄排版：儲存 PDF 與 輸入其他學生 -->
@@ -1302,6 +1312,7 @@
                 }
                 
                 document.getElementById('comments').style.height = 'auto'; // Reset comments height
+                document.getElementById('comments_print').textContent = '';
 
                 ['math', 'eng', 'chi'].forEach(sub => {
                     document.getElementById(`${sub}_topic`).value = "請先選擇級別與號位";
@@ -1328,6 +1339,9 @@
         }
 
         function exportToPdf() {
+            // 列印前，將輸入框的文字完整複製到純文字 div，避開瀏覽器列印輸入框的 Bug
+            document.getElementById('comments_print').textContent = document.getElementById('comments').value;
+            
             alert("提示：在接下來開啟的視窗中，請將「目的地 / 印表機」更改設定為【另存為 PDF (Save as PDF)】，即可直接下載儲存 PDF 檔到您的裝置中！");
             window.print();
         }
