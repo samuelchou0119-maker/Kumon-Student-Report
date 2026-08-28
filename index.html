@@ -62,9 +62,9 @@
             align-items: center;
         }
         .form-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-            gap: 10px;
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
         }
         .form-group {
             display: flex;
@@ -328,84 +328,46 @@
         }
         .btn-reset:hover { background: #475569; }
 
-        /* 高質感列印樣式 */
-        @page { size: A4 portrait; margin: 8mm; }
+        /* 高質感 1 頁 A4 列印樣式 (極致壓縮版) */
+        @page { size: A4 portrait; margin: 6mm; }
         @media print {
-            body {
-                background-color: #ffffff !important;
-                padding: 0 !important;
-                margin: 0 !important;
-                -webkit-print-color-adjust: exact !important;
-                print-color-adjust: exact !important;
-            }
-            .container {
-                box-shadow: none !important;
-                padding: 0 !important;
-                max-width: 100% !important;
-                width: 100% !important;
-            }
-            .btn-rewrite, .btn-submit, .btn-reset, .button-group, .tag-category-title span, .btn-help-inline, .tag-container {
-                display: none !important;
-            }
-            .three-column-grid {
-                display: grid !important;
-                grid-template-columns: repeat(3, 1fr) !important;
-                gap: 10px !important;
-                margin-bottom: 10px !important;
-                page-break-inside: avoid !important;
-                break-inside: avoid !important;
-            }
-            .mini-card, .chart-box {
-                page-break-inside: avoid !important;
-                break-inside: avoid !important;
-            }
+            body { background-color: #ffffff !important; padding: 0 !important; margin: 0 !important; -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+            .container { box-shadow: none !important; padding: 0 !important; max-width: 100% !important; width: 100% !important; }
+            .btn-rewrite, .btn-submit, .btn-reset, .button-group, .tag-category-title span, .btn-help-inline, .tag-container { display: none !important; }
+            
+            h1 { margin: 0 0 6px 0 !important; font-size: 16px !important; padding-bottom: 2px !important; border-bottom-width: 1px !important; }
+            .section-title { margin: 8px 0 4px 0 !important; padding: 2px 6px !important; font-size: 12px !important; }
+            .three-column-grid { display: grid !important; grid-template-columns: repeat(3, 1fr) !important; gap: 6px !important; margin-bottom: 6px !important; }
+            .mini-card { padding: 6px !important; }
+            
+            /* 第一區塊：同列顯示與對齊 */
+            .form-grid { display: flex !important; justify-content: flex-start !important; gap: 15px !important; align-items: flex-end !important; }
+            
+            /* 去除所有邊框，純文字顯示 */
             input, select, textarea {
-                border: none !important;
-                background: transparent !important;
-                appearance: none !important;
-                -webkit-appearance: none !important;
-                color: #000 !important;
-                font-weight: bold !important;
-                padding: 0 !important;
-                margin: 0 !important;
-                width: auto !important;
-                box-shadow: none !important;
+                border: none !important; background: transparent !important;
+                appearance: none !important; -webkit-appearance: none !important;
+                color: #000 !important; font-weight: bold !important;
+                padding: 0 !important; margin: 0 !important; width: auto !important; box-shadow: none !important;
             }
-            textarea {
-                resize: none !important;
-                border: 1px solid #e2e8f0 !important;
-                padding: 6px !important;
-            }
-            .mini-card .form-group div[style*="display:flex"] {
-                display: flex !important;
-                justify-content: flex-start !important;
-                align-items: center !important;
-                gap: 6px !important;
-            }
-            .eval-row {
-                display: flex !important;
-                justify-content: flex-start !important;
-                align-items: center !important;
-                gap: 15px !important; 
-                margin-bottom: 4px !important;
-            }
-            .eval-row select {
-                text-align: left !important;
-                width: auto !important;
-            }
-            .topic-display-input, .focus-display-input, .feedback-input {
-                border: none !important;
-                background: transparent !important;
-                padding: 0 !important;
-            }
-            .chart-box {
-                height: 210px !important;
-                box-sizing: border-box !important;
-            }
-            .chart-box canvas {
-                max-height: 160px !important;
-                width: 100% !important;
-            }
+            
+            /* 年月/級別號位 緊密靠近 */
+            .date-flex, .progress-flex { display: flex !important; justify-content: flex-start !important; gap: 2px !important; align-items: center !important;}
+            .date-flex select, .progress-flex select { flex: none !important; width: auto !important; }
+            
+            /* 評估項目完美齊頭對齊 (鎖死標籤寬度 115px) */
+            .eval-row { display: flex !important; justify-content: flex-start !important; align-items: center !important; gap: 2px !important; margin-bottom: 2px !important; }
+            .eval-row label { width: 115px !important; flex-shrink: 0 !important; text-align: left !important; font-size: 10px !important; margin: 0 !important; }
+            .eval-row select { font-size: 10px !important; width: auto !important; text-align: left !important; }
+            
+            /* 確保評語文字完整呈現，不會被切斷或捲動 */
+            textarea#comments { height: auto !important; overflow: visible !important; white-space: pre-wrap !important; font-size: 11px !important; line-height: 1.4 !important; }
+            textarea.focus-display-input { resize: none !important; border: 1px solid #e2e8f0 !important; padding: 2px !important; font-size: 9px !important; min-height: 24px !important; }
+            
+            /* 圖表縮小讓出空間 */
+            .chart-box { height: 150px !important; padding: 4px !important; }
+            .chart-box h4 { margin: 0 0 2px 0 !important; font-size: 11px !important; }
+            .chart-box canvas { max-height: 115px !important; width: 100% !important; }
         }
     </style>
 </head>
@@ -415,12 +377,12 @@
         <form id="reportForm">
             <!-- 第一區塊：基本資訊 -->
             <div class="section-title">第一區塊：學生基本資訊</div>
-            <div class="form-grid" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));">
-                <div class="form-group">
+            <div class="form-grid">
+                <div class="form-group" style="flex: 1; min-width: 120px;">
                     <label for="studentName">學生姓名</label>
                     <input type="text" id="studentName" placeholder="例如：張小明" oninput="updateComments()">
                 </div>
-                <div class="form-group">
+                <div class="form-group" style="flex: 1; min-width: 120px;">
                     <label for="grade">目前年級</label>
                     <select id="grade" onchange="updateAllOverGrade()">
                         <option value="">-- 請選擇年級 --</option>
@@ -435,15 +397,15 @@
                         <option value="大學">大學</option><option value="社會人士">社會人士</option>
                     </select>
                 </div>
-                <div class="form-group">
+                <div class="form-group" style="flex: 1.2; min-width: 150px;">
                     <label>入學時間</label>
-                    <div style="display: flex; gap: 6px;">
-                        <select id="enrollYear" style="flex:2;" onchange="calculateEnrollDuration()"></select>
-                        <select id="enrollMonth" style="flex:1;" onchange="calculateEnrollDuration()"></select>
+                    <div class="date-flex" style="display: flex; gap: 4px;">
+                        <select id="enrollYear" onchange="calculateEnrollDuration()" style="width: auto;"></select>
+                        <select id="enrollMonth" onchange="calculateEnrollDuration()" style="width: auto;"></select>
                     </div>
                 </div>
-                <div class="form-group">
-                    <label for="enrollDuration">在學期間 (自動計算)</label>
+                <div class="form-group" style="flex: 1; min-width: 120px;">
+                    <label for="enrollDuration">在學期間</label>
                     <input type="text" id="enrollDuration" value="請選擇入學時間" readonly style="background-color: #f8fafc; color: #a0aec0;">
                 </div>
             </div>
@@ -458,9 +420,9 @@
                     <div class="mini-card-header"><span>📘 數學科</span></div>
                     <div class="form-group" style="margin-bottom:4px;">
                         <label>當前進度 (級別 / 號位區間)</label>
-                        <div style="display:flex; gap:4px;">
-                            <select id="math_level" onchange="onProgressChange('math')" style="flex:1;"></select>
-                            <select id="math_no" onchange="onProgressChange('math')" style="flex:1;"></select>
+                        <div class="progress-flex" style="display:flex; gap:2px;">
+                            <select id="math_level" onchange="onProgressChange('math')" style="flex:none; width: auto;"></select>
+                            <select id="math_no" onchange="onProgressChange('math')" style="flex:none; width: auto;"></select>
                         </div>
                     </div>
                     <div class="form-group topic-display-row">
@@ -492,9 +454,9 @@
                     <div class="mini-card-header"><span>📕 英文科</span></div>
                     <div class="form-group" style="margin-bottom:4px;">
                         <label>當前進度 (級別 / 號位區間)</label>
-                        <div style="display:flex; gap:4px;">
-                            <select id="eng_level" onchange="onProgressChange('eng')" style="flex:1;"></select>
-                            <select id="eng_no" onchange="onProgressChange('eng')" style="flex:1;"></select>
+                        <div class="progress-flex" style="display:flex; gap:2px;">
+                            <select id="eng_level" onchange="onProgressChange('eng')" style="flex:none; width: auto;"></select>
+                            <select id="eng_no" onchange="onProgressChange('eng')" style="flex:none; width: auto;"></select>
                         </div>
                     </div>
                     <div class="form-group topic-display-row">
@@ -526,9 +488,9 @@
                     <div class="mini-card-header"><span>📗 國文科</span></div>
                     <div class="form-group" style="margin-bottom:4px;">
                         <label>當前進度 (級別 / 號位區間)</label>
-                        <div style="display:flex; gap:4px;">
-                            <select id="chi_level" onchange="onProgressChange('chi')" style="flex:1;"></select>
-                            <select id="chi_no" onchange="onProgressChange('chi')" style="flex:1;"></select>
+                        <div class="progress-flex" style="display:flex; gap:2px;">
+                            <select id="chi_level" onchange="onProgressChange('chi')" style="flex:none; width: auto;"></select>
+                            <select id="chi_no" onchange="onProgressChange('chi')" style="flex:none; width: auto;"></select>
                         </div>
                     </div>
                     <div class="form-group topic-display-row">
@@ -696,8 +658,11 @@
                 <div class="tag-btn improve" onclick="toggleTag(this, '保持耐心信心', 'improve', '遭遇新階段難題時請保持耐心與信心，相信自己的解題潛能')">+ 保持耐心信心</div>
             </div>
 
+            <!-- 自動長高、無拖拉游標的文字框 -->
             <div class="form-group">
-                <textarea id="comments" rows="4" placeholder="可自行輸入，或點選上方標籤將自動組合成一篇對家長說明的流暢對話，亦可點擊右上方『🎲 替換/重寫』切換語氣..."></textarea>
+                <textarea id="comments" rows="3" placeholder="可自行輸入，或點選上方標籤將自動組合成一篇對家長說明的流暢對話，亦可點擊右上方『🎲 替換/重寫』切換語氣..." 
+                style="resize: none; overflow: hidden;" 
+                oninput="this.style.height = ''; this.style.height = this.scrollHeight + 'px'"></textarea>
             </div>
 
             <!-- 底部按鈕雙欄排版：儲存 PDF 與 輸入其他學生 -->
@@ -817,7 +782,6 @@
             if (syllabusData[sub] && syllabusData[sub][level] && syllabusData[sub][level][startNo]) {
                 topicName = syllabusData[sub][level][startNo].name;
                 focusName = syllabusData[sub][level][startNo].focus;
-                if (sub === 'eng') focusName = focusName.replace(/CD/g, '點讀筆');
             }
 
             topicInput.value = `${level}(${noRange})：${topicName}`;
@@ -847,7 +811,6 @@
             if (syllabusData[sub] && syllabusData[sub][level] && syllabusData[sub][level][startNo]) {
                 topicName = syllabusData[sub][level][startNo].name;
                 focusName = syllabusData[sub][level][startNo].focus;
-                if (sub === 'eng') focusName = focusName.replace(/CD/g, '點讀筆');
             }
 
             topicInput.value = `${level}(${noRange})：${topicName}`;
@@ -1191,6 +1154,7 @@
 
             if (parts.length === 0) {
                 document.getElementById('comments').value = "";
+                document.getElementById('comments').style.height = 'auto'; // Reset height
                 return;
             }
 
@@ -1203,7 +1167,12 @@
                 resultText = `家長好，關於學生近期在教室的學習狀況：\n學生在課堂上${combined}`;
             }
             
-            document.getElementById('comments').value = resultText;
+            const commentsEl = document.getElementById('comments');
+            commentsEl.value = resultText;
+            
+            // 自動計算撐開高度，避免列印時截斷
+            commentsEl.style.height = 'auto';
+            commentsEl.style.height = commentsEl.scrollHeight + 'px';
         }
 
         function regenerateParagraph() {
@@ -1280,6 +1249,8 @@
                 const durationInput = document.getElementById('enrollDuration');
                 durationInput.value = "請選擇入學時間";
                 durationInput.style.color = "#a0aec0";
+                
+                document.getElementById('comments').style.height = 'auto'; // Reset comments height
 
                 ['math', 'eng', 'chi'].forEach(sub => {
                     document.getElementById(`${sub}_topic`).value = "請先選擇級別與號位";
