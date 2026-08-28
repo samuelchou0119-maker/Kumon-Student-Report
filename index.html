@@ -205,6 +205,8 @@
             border-radius: 4px;
             margin-top: 6px;
         }
+        
+        /* 調整圖表外框，去除強制推開間距，讓圖表緊靠標題 */
         .chart-box {
             background: #fff;
             border: 1px solid var(--border-color);
@@ -214,10 +216,12 @@
             height: 220px;
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
+            justify-content: flex-start;
         }
+        /* 放大圖表的高度上限 */
         .chart-box canvas {
-            max-height: 180px !important;
+            max-height: 190px !important;
+            width: 100% !important;
         }
 
         /* 標籤選擇器相關樣式 */
@@ -372,10 +376,10 @@
             /* 焦點學習框維持純文字高度自動 */
             textarea.focus-display-input { resize: none !important; border: 1px solid #e2e8f0 !important; padding: 2px !important; font-size: 9px !important; min-height: 24px !important; overflow: visible !important; }
             
-            /* 圖表縮小讓出空間 */
-            .chart-box { height: 150px !important; padding: 4px !important; }
+            /* 圖表壓縮與最大化設定 */
+            .chart-box { height: 150px !important; padding: 4px !important; justify-content: flex-start !important; }
             .chart-box h4 { margin: 0 0 2px 0 !important; font-size: 11px !important; }
-            .chart-box canvas { max-height: 115px !important; width: 100% !important; }
+            .chart-box canvas { max-height: 125px !important; width: 100% !important; margin-top: 0 !important; }
         }
     </style>
 </head>
@@ -418,7 +422,6 @@
                 </div>
                 <div class="form-group" style="flex: 1; min-width: 110px;">
                     <label for="enrollDuration">在學期間</label>
-                    <!-- 預設值改為"自動計算" -->
                     <input type="text" id="enrollDuration" value="自動計算" readonly style="background-color: #f8fafc; color: #a0aec0;">
                 </div>
             </div>
@@ -607,18 +610,18 @@
                 </div>
             </div>
 
-            <!-- 各科獨立學習走勢圖表 -->
+            <!-- 各科獨立學習走勢圖表 (已縮小標題底部間距) -->
             <div class="three-column-grid" style="margin-top: 15px;">
                 <div class="chart-box" id="chart_box_math">
-                    <h4 style="margin:2px 0 6px 0; font-size:13px; color:#00a0e9;">📈 數學進度發展與預測</h4>
+                    <h4 style="margin:0 0 2px 0; font-size:13px; color:#00a0e9;">📈 數學進度發展與預測</h4>
                     <canvas id="mathChart"></canvas>
                 </div>
                 <div class="chart-box" id="chart_box_eng">
-                    <h4 style="margin:2px 0 6px 0; font-size:13px; color:#e74c3c;">📈 英文進度發展與預測</h4>
+                    <h4 style="margin:0 0 2px 0; font-size:13px; color:#e74c3c;">📈 英文進度發展與預測</h4>
                     <canvas id="engChart"></canvas>
                 </div>
                 <div class="chart-box" id="chart_box_chi">
-                    <h4 style="margin:2px 0 6px 0; font-size:13px; color:#2ecc71;">📈 國文進度發展與預測</h4>
+                    <h4 style="margin:0 0 2px 0; font-size:13px; color:#2ecc71;">📈 國文進度發展與預測</h4>
                     <canvas id="chiChart"></canvas>
                 </div>
             </div>
@@ -1098,8 +1101,8 @@
                                 pointRadius: 5,
                                 tension: 0.1,
                                 pointLabels: [
-                                    pLvl ? `${pLvl} ${pNo}` : '', 
-                                    cLvl ? `${cLvl} ${cNo}` : '', 
+                                    pLvl ? `${pLvl}${pNo}` : '', 
+                                    cLvl ? `${cLvl}${cNo}` : '', 
                                     ''
                                 ]
                             },
@@ -1114,12 +1117,13 @@
                                 tension: 0.1,
                                 pointLabels: [
                                     '', 
-                                    cLvl ? `${cLvl} ${cNo}` : '', 
-                                    fLvl ? `${fLvl} ${fNo}` : ''
+                                    cLvl ? `${cLvl}${cNo}` : '', 
+                                    fLvl ? `${fLvl}${fNo}` : ''
                                 ]
                             }
                         ]
                     },
+                    /* 在這邊將 top 25 改成 12，大幅減少圖表預設的上層留白 */
                     options: getSingleChartOptions(sub.isChi, minVal, maxVal)
                 });
             });
@@ -1133,7 +1137,7 @@
                 maintainAspectRatio: false,
                 devicePixelRatio: 3, 
                 layout: {
-                    padding: { top: 25, left: 10, right: 15, bottom: 5 }
+                    padding: { top: 12, left: 10, right: 15, bottom: 5 } /* 修改這裡：top 縮減至 12 */
                 },
                 plugins: {
                     legend: { display: false },
@@ -1254,111 +1258,45 @@
                     <p>• <strong>作業力：</strong> 完成時間穩定落在標準完成時間（X~Y分）內，能長時間保持高效作業狀態。</p>
                     <p>• <strong>心算能力：</strong> 直式筆算不寫進借位記號；能心算求得約分之最大公因數與通分之最小公倍數。</p>
                     <p>• <strong>理解能力：</strong> 能仔細看例題/導入獨力自學新課題，面對帶星號難題與填空展現高自學理解力。</p>
-                    <p>• <strong>訂正能力：</strong> 能推敲計算過程，迅速發現錯誤並只擦掉寫錯的數字局部修正。</p>
-                    <p>• <strong>驗算能力：</strong> 具備主持驗算與自我檢查意識，解題過程能邊思考邊驗證答案正確性。</p>
-                    <p>• <strong>書寫能力：</strong> 能書寫最簡潔中間步驟，並自如運用交換律、分配律等技巧簡化計算。</p>
-                `;
-            } else if (sub === 'eng') {
-                subName = "📕 英文科";
-                sub5StarsDetail = `
-                    <p>• <strong>作業力與記憶力：</strong> 當天新詞句記憶迅速；抄寫文章時不需頻繁翻看原文，短期記憶極佳。</p>
-                    <p>• <strong>音讀能力：</strong> 發音清楚、斷句與停頓恰當，具備良好抑揚頓挫與適當語速，能邊音讀邊理解。</p>
-                    <p>• <strong>理解能力：</strong> 能精準掌握例句結構與句子邏輯；做閱讀理解題能迅速翻看定位答案。</p>
-                    <p>• <strong>詞彙能力：</strong> 遇無注釋或無翻譯單字時，能根據上下文推測含義並順暢不停頓讀完文章。</p>
-                    <p>• <strong>組織語言寫答案：</strong> 能推算字數、留空適當並一氣呵成寫出答案，展現高階語言組織力。</p>
-                    <p>• <strong>訂正與檢查能力：</strong> 能在寫作中自主檢查發現時態與結構錯誤，並參考例句自動修正。</p>
-                `;
-            } else if (sub === 'chi') {
-                subName = "📗 國文科";
-                sub5StarsDetail = `
-                    <p>• <strong>學習積極性與認真度：</strong> 好奇心旺盛、不輕易提問並努力自學解決問題；按時認真完成作業，堅持不懈。</p>
-                    <p>• <strong>詞彙量與記憶力：</strong> 短期記憶強，a面讀寫過語詞b面能順暢寫出；翻頁次數少，具備豐富詞彙量。</p>
-                    <p>• <strong>音讀能力：</strong> 無讀錯字、斷句與停頓恰當，語速適中，能準確掌握文章脈絡與情節關係。</p>
-                    <p>• <strong>閱讀理解能力：</strong> 看指示文即時作答；讀完文章整篇內容已記於腦中，能領會深層涵義與思考整理。</p>
-                    <p>• <strong>組織語言寫答案：</strong> 準確符合題目條件，能處理複雜句結構與主謂搭配，精準表達答案。</p>
-                    <p>• <strong>訂正與檢查能力：</strong> 秉持「讀後寫、寫後讀」，只擦拭錯誤處迅速訂正；多元閱讀各類型高階推薦圖書。</p>
-                `;
-            }
+                    <p>• <strong>訂正能力：</strong> 能推敲計算過程，迅速發現錯誤並只擦掉寫錯的數字局部修正您可以透過修改 HTML 的**行內樣式 (inline style)** 來縮小間距，並修改 CSS 來**放大圖表本身的高度**。
 
-            modalTitle.textContent = `💡 ${subName} 能力評估評判基準說明`;
-            modalBody.innerHTML = `
-                <div style="background:#eef7fe; padding:8px 10px; border-radius:6px; margin-bottom:10px; border-left:4px solid var(--primary-color);">
-                    <strong style="color:var(--primary-color);">🌟 卓越精熟 (5分) 核心指標：</strong>
-                    ${sub5StarsDetail}
-                </div>
-                <p><strong>✨ 穩定表現 (4分)：</strong> 完成時間穩定落在標準時間內；理解良好，偶有粗心但能自行發現並迅速修正。</p>
-                <p><strong>🌱 循序成長 (3分)：</strong> 掌握基本觀念，面對新課題或難題時偶爾需要提示或參考例題；抄寫時需多次翻看原文。</p>
-                <p><strong>💡 建構基礎 (2分)：</strong> 正在累積核心概念，解題較易急躁失誤，需要示範與引導；訂正時習慣擦掉整題重寫。</p>
-                <p><strong>🔍 探索起步 (1分)：</strong> 新教材剛開始適應，處於建立定時寫作業習慣與累積基礎計算/詞彙力的起步階段。</p>
-            `;
-            document.getElementById('helpModal').style.display = 'flex';
-        }
+請在您的 `index.html` 檔案中尋找並修改以下兩處：
 
-        function closeHelpModal() {
-            document.getElementById('helpModal').style.display = 'none';
-        }
+**1. 縮小圖表與上方設定區的間距**
+找到「各科獨立學習走勢圖表」的區塊，將原本的 `margin-top: 15px;` 縮小（例如改為 `5px` 或是直接移除）：
 
-        // 當輸入學生姓名時，同步更新網頁標題
-        function updatePageTitle() {
-            let fullName = document.getElementById('studentName').value.trim();
-            const pageTitleEl = document.getElementById('pageTitle');
-            
-            if (fullName) {
-                pageTitleEl.textContent = `KUMON 學生學習診斷與發展報告_${fullName}`;
-            } else {
-                pageTitleEl.textContent = `KUMON 學生學習診斷與發展報告`;
-            }
-        }
+*   **修改前：**
+    ```html
+    <!-- 各科獨立學習走勢圖表 -->
+    <div class="three-column-grid" style="margin-top: 15px;">
+    ```
+*   **修改後：**
+    ```html
+    <!-- 各科獨立學習走勢圖表 -->
+    <div class="three-column-grid" style="margin-top: 5px;">
+    ```
+*(註：因為它上方的 `three-column-grid` 本身已經自帶 `margin-bottom: 12px;`，所以這裡的 `margin-top` 設小一點或設為 `0` 就能大幅縮減空白。)*
 
-        function resetFormForNextStudent() {
-            if (confirm("確定要清空目前填寫的資料，開始輸入下一位學生嗎？")) {
-                document.getElementById('reportForm').reset();
-                document.getElementById('pageTitle').textContent = 'KUMON 學生學習診斷與發展報告';
-                
-                const durationInput = document.getElementById('enrollDuration');
-                durationInput.value = "自動計算";
-                durationInput.style.color = "#a0aec0";
+**2. 放大圖表顯示比例**
+若要讓圖表變得更大，請回到上方的 `<style>` 區塊，找到 `.chart-box` 與 `.chart-box canvas` 的設定，增加它們的高度限制：
 
-                const enrollGradeInput = document.getElementById('enrollGrade');
-                if(enrollGradeInput) {
-                    enrollGradeInput.value = "自動計算";
-                    enrollGradeInput.style.color = "#a0aec0";
-                }
-                
-                document.getElementById('comments').style.height = 'auto'; // Reset comments height
-                document.getElementById('comments_print').textContent = '';
+*   **修改前：**
+    ```css
+    .chart-box {
+        ...
+        height: 220px;
+        ...
+    }
+    .chart-box canvas {max-height: 180px !important; }
+    ```
+*   **修改後（數值可依需求微調）：**
+    ```css
+    .chart-box {
+        ...
+        height: 260px; /* 增加外框高度 */
+        ...
+    }
+    .chart-box canvas {max-height: 220px !important; } /* 增加圖表本身的最大高度 */
+    ```
 
-                ['math', 'eng', 'chi'].forEach(sub => {
-                    document.getElementById(`${sub}_topic`).value = "請先選擇級別與號位";
-                    document.getElementById(`${sub}_topic`).style.color = "#718096";
-                    document.getElementById(`${sub}_focus`).value = "選取進度後將顯示學習重點";
-                    document.getElementById(`${sub}_focus`).style.color = "#a0aec0";
-                    document.getElementById(`status_${sub}`).textContent = "請先選擇年級與進度";
-                    document.getElementById(`status_${sub}`).style.color = "#a0aec0";
-                    
-                    document.getElementById(`future_${sub}_topic`).value = "請先選擇半年後級別與號位";
-                    document.getElementById(`future_${sub}_topic`).style.color = "#718096";
-                    document.getElementById(`future_${sub}_focus`).value = "選取半年後進度後顯示重點";
-                    document.getElementById(`future_${sub}_focus`).style.color = "#a0aec0";
-                    document.getElementById(`future_status_${sub}`).textContent = "請先選擇年級與半年後進度";
-                    document.getElementById(`future_status_${sub}`).style.color = "#a0aec0";
-                });
-
-                selectedTags = { trait: [], positive: [], improve: [] };
-                document.querySelectorAll('.tag-btn.active').forEach(btn => btn.classList.remove('active'));
-                
-                renderCharts();
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-            }
-        }
-
-        function exportToPdf() {
-            // 列印前，將輸入框的文字完整複製到純文字 div，避開瀏覽器列印輸入框的 Bug
-            document.getElementById('comments_print').textContent = document.getElementById('comments').value;
-            
-            alert("提示：在接下來開啟的視窗中，請將「目的地 / 印表機」更改設定為【另存為 PDF (Save as PDF)】，即可直接下載儲存 PDF 檔到您的裝置中！");
-            window.print();
-        }
-    </script>
-</body>
-</html>
+這樣調整後，中間的空白會減少，且圖表的繪圖區域會變得更高、更大！
