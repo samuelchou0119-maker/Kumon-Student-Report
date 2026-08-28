@@ -335,13 +335,13 @@
         .only-print { display: none; white-space: pre-wrap; font-size: 13px; line-height: 1.5; padding: 4px; border: 1px solid #dcdfe6; border-radius: 6px; min-height: 60px; }
 
         /* =========================================
-           高質感 1 頁 A4 列印樣式 (黃金比例微調版) 
+           高質感 1 頁 A4 列印樣式 (精細微調 最終版) 
            ========================================= */
-        @page { size: A4 portrait; margin: 8mm; } 
+        @page { size: A4 portrait; margin: 7mm; } 
         @media print {
             /* 列印時隱藏輸入框與所有按鈕、標籤，只顯示純文字區塊 */
             .no-print { display: none !important; }
-            .only-print { display: block !important; border: none !important; padding: 0 !important; font-size: 13px !important; line-height: 1.6 !important; min-height: 20px !important; margin-bottom: 0 !important; }
+            .only-print { display: block !important; border: none !important; padding: 0 !important; font-size: 13px !important; line-height: 1.5 !important; min-height: 20px !important; margin-bottom: 0 !important; }
             
             body { background-color: #ffffff !important; padding: 0 !important; margin: 0 !important; -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
             .container { box-shadow: none !important; padding: 0 !important; max-width: 100% !important; width: 100% !important; margin: 0 !important; }
@@ -349,10 +349,10 @@
             /* 隱藏標籤與按鈕 */
             .btn-rewrite, .btn-submit, .btn-reset, .button-group, .tag-category-title, .tag-container, .btn-help-inline { display: none !important; }
             
-            /* 標題與區塊間距 */
-            h1 { margin: 0 0 8px 0 !important; font-size: 18px !important; padding-bottom: 4px !important; border-bottom-width: 2px !important; }
-            .section-title { margin: 8px 0 6px 0 !important; padding: 4px 6px !important; font-size: 13px !important; }
-            .three-column-grid { display: grid !important; grid-template-columns: repeat(3, 1fr) !important; gap: 8px !important; margin-bottom: 8px !important; }
+            /* 標題與區塊間距微縮 */
+            h1 { margin: 0 0 6px 0 !important; font-size: 18px !important; padding-bottom: 4px !important; border-bottom-width: 2px !important; }
+            .section-title { margin: 6px 0 4px 0 !important; padding: 4px 6px !important; font-size: 13px !important; }
+            .three-column-grid { display: grid !important; grid-template-columns: repeat(3, 1fr) !important; gap: 8px !important; margin-bottom: 6px !important; }
             .mini-card { padding: 6px !important; }
             
             /* 第一區塊：同列顯示與對齊 */
@@ -371,8 +371,8 @@
             .date-flex select, .progress-flex select { flex: none !important; width: auto !important; }
             
             /* 課題與重點 */
-            .topic-display-row { margin-bottom: 4px !important; }
-            .eval-section-header { margin: 6px 0 4px 0 !important; padding: 2px 4px !important; font-size: 11px !important; }
+            .topic-display-row { margin-bottom: 3px !important; }
+            .eval-section-header { margin: 4px 0 3px 0 !important; padding: 2px 4px !important; font-size: 11px !important; }
 
             /* 評估項目對齊與行距 */
             .eval-row { display: flex !important; justify-content: flex-start !important; align-items: center !important; gap: 2px !important; margin-bottom: 2px !important; }
@@ -382,13 +382,13 @@
             /* 焦點學習框維持純文字高度自動 */
             textarea.focus-display-input { resize: none !important; border: 1px solid #e2e8f0 !important; padding: 3px !important; font-size: 10px !important; min-height: 26px !important; overflow: visible !important; }
             
-            .trend-row { margin-top: 4px !important; }
-            .overgrade-status { margin-top: 4px !important; padding: 2px !important; font-size: 11px !important;}
+            .trend-row { margin-top: 3px !important; }
+            .overgrade-status { margin-top: 3px !important; padding: 2px !important; font-size: 11px !important;}
 
-            /* 將圖表稍微放大至 190px，填補版面空間但不會壓縮到長篇評語 */
-            .chart-box { height: 190px !important; padding: 6px !important; justify-content: flex-start !important; margin-bottom: 0 !important;}
+            /* 圖表稍微調降至 175px，擠出這最後幾行的關鍵空間 */
+            .chart-box { height: 175px !important; padding: 6px !important; justify-content: flex-start !important; margin-bottom: 0 !important;}
             .chart-box h4 { margin: 0 0 4px 0 !important; font-size: 12px !important; }
-            .chart-box canvas { max-height: 160px !important; width: 100% !important; margin-top: 0 !important; }
+            .chart-box canvas { max-height: 145px !important; width: 100% !important; margin-top: 0 !important; }
         }
     </style>
 </head>
