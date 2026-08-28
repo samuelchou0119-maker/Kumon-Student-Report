@@ -63,7 +63,7 @@
         }
         .form-grid {
             display: flex;
-            gap: 15px;
+            gap: 12px;
             flex-wrap: wrap;
         }
         .form-group {
@@ -341,7 +341,7 @@
             .mini-card { padding: 6px !important; }
             
             /* 第一區塊：同列顯示與對齊 */
-            .form-grid { display: flex !important; justify-content: flex-start !important; gap: 15px !important; align-items: flex-end !important; }
+            .form-grid { display: flex !important; justify-content: flex-start !important; gap: 8px !important; align-items: flex-end !important; }
             
             /* 去除所有邊框，純文字顯示 */
             input, select, textarea {
@@ -378,13 +378,14 @@
             <!-- 第一區塊：基本資訊 -->
             <div class="section-title">第一區塊：學生基本資訊</div>
             <div class="form-grid">
-                <div class="form-group" style="flex: 1; min-width: 120px;">
+                <div class="form-group" style="flex: 1; min-width: 100px;">
                     <label for="studentName">學生姓名</label>
                     <input type="text" id="studentName" placeholder="例如：張小明" oninput="updateComments()">
                 </div>
-                <div class="form-group" style="flex: 1; min-width: 120px;">
+                <div class="form-group" style="flex: 1; min-width: 90px;">
                     <label for="grade">目前年級</label>
-                    <select id="grade" onchange="updateAllOverGrade()">
+                    <!-- 加上 calculateEnrollDuration() 讓切換年級時也能自動更新入學年級 -->
+                    <select id="grade" onchange="updateAllOverGrade(); calculateEnrollDuration();">
                         <option value="">-- 請選擇年級 --</option>
                         <option value="幼未">幼未</option><option value="幼小">幼小</option>
                         <option value="幼中">幼中</option><option value="幼大">幼大</option>
@@ -397,14 +398,19 @@
                         <option value="大學">大學</option><option value="社會人士">社會人士</option>
                     </select>
                 </div>
-                <div class="form-group" style="flex: 1.2; min-width: 150px;">
+                <div class="form-group" style="flex: 1.2; min-width: 130px;">
                     <label>入學時間</label>
                     <div class="date-flex" style="display: flex; gap: 4px;">
                         <select id="enrollYear" onchange="calculateEnrollDuration()" style="width: auto;"></select>
                         <select id="enrollMonth" onchange="calculateEnrollDuration()" style="width: auto;"></select>
                     </div>
                 </div>
-                <div class="form-group" style="flex: 1; min-width: 120px;">
+                <!-- 新增：入學年級欄位 -->
+                <div class="form-group" style="flex: 1; min-width: 80px;">
+                    <label for="enrollGrade">入學年級</label>
+                    <input type="text" id="enrollGrade" value="自動計算" readonly style="background-color: #f8fafc; color: #a0aec0; text-align: center;">
+                </div>
+                <div class="form-group" style="flex: 1; min-width: 110px;">
                     <label for="enrollDuration">在學期間</label>
                     <input type="text" id="enrollDuration" value="請選擇入學時間" readonly style="background-color: #f8fafc; color: #a0aec0;">
                 </div>
@@ -718,10 +724,16 @@
             const enrollYearVal = document.getElementById('enrollYear').value;
             const enrollMonthVal = document.getElementById('enrollMonth').value;
             const durationInput = document.getElementById('enrollDuration');
+            const enrollGradeInput = document.getElementById('enrollGrade');
+            const currentGrade = document.getElementById('grade').value;
 
             if (!enrollYearVal || !enrollMonthVal) {
                 durationInput.value = "請選擇入學時間";
                 durationInput.style.color = "#a0aec0";
+                if(enrollGradeInput) {
+                    enrollGradeInput.value = "自動計算";
+                    enrollGradeInput.style.color = "#a0aec0";
+                }
                 return;
             }
 
@@ -731,6 +743,7 @@
             const currentYear = now.getFullYear();
             const currentMonth = now.getMonth() + 1;
 
+            // 1. 計算在學期間
             let totalMonths = (currentYear - enrollYear) * 12 + (currentMonth - enrollMonth);
             if (totalMonths < 0) totalMonths = 0;
 
@@ -747,6 +760,38 @@
             }
             durationInput.value = durationText;
             durationInput.style.color = "#2b6cb0";
+
+            // 2. 計算入學年級 (以 8 月為新學年起點)
+            if (enrollGradeInput) {
+                if (!currentGrade) {
+                    enrollGradeInput.value = "-";
+                    enrollGradeInput.style.color = "#a0aec0";
+                } else {
+                    const gradeList = ['幼未', '幼小', '幼中', '幼大', '小一', '小二', '小三', '小四', '小五', '小六', '國一', '國二', '國三', '高一', '高二', '高三', '大學', '社會人士'];
+                    const curGradeIdx = gradeList.indexOf(currentGrade);
+                    
+                    if (curGradeIdx === -1 || currentGrade === '社會人士' || currentGrade === '大學') {
+                        enrollGradeInput.value = "-";
+                        enrollGradeInput.style.color = "#2b6cb0";
+                    } else {
+                        // 判斷目前的學年 (8月含之後算今年，7月含之前算去年)
+                        const curAcademicYear = currentMonth >= 8 ? currentYear : currentYear - 1;
+                        // 判斷入學時的學年
+                        const enrollAcademicYear = enrollMonth >= 8 ? enrollYear : enrollYear - 1;
+                        
+                        // 計算跨越了幾個學年
+                        const yearDiff = curAcademicYear - enrollAcademicYear;
+                        let enrollGradeIdx = curGradeIdx - yearDiff;
+                        
+                        // 確保不超出陣列範圍 (最低顯示幼未)
+                        if (enrollGradeIdx < 0) enrollGradeIdx = 0; 
+                        if (enrollGradeIdx >= gradeList.length) enrollGradeIdx = gradeList.length - 1;
+                        
+                        enrollGradeInput.value = gradeList[enrollGradeIdx];
+                        enrollGradeInput.style.color = "#b45309"; 
+                    }
+                }
+            }
         }
 
         function onProgressChange(sub) {
@@ -1249,6 +1294,12 @@
                 const durationInput = document.getElementById('enrollDuration');
                 durationInput.value = "請選擇入學時間";
                 durationInput.style.color = "#a0aec0";
+
+                const enrollGradeInput = document.getElementById('enrollGrade');
+                if(enrollGradeInput) {
+                    enrollGradeInput.value = "自動計算";
+                    enrollGradeInput.style.color = "#a0aec0";
+                }
                 
                 document.getElementById('comments').style.height = 'auto'; // Reset comments height
 
