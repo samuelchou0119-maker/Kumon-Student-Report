@@ -206,20 +206,20 @@
             margin-top: 6px;
         }
         
-        /* 調整圖表外框，去除強制推開間距，讓圖表緊靠標題並放大高度 */
+        /* 調整圖表外框，讓圖表螢幕上夠大 */
         .chart-box {
             background: #fff;
             border: 1px solid var(--border-color);
             border-radius: 8px;
             padding: 10px;
             text-align: center;
-            height: 260px; /* 增加高度讓圖表更大 */
+            height: 260px;
             display: flex;
             flex-direction: column;
             justify-content: flex-start;
         }
         .chart-box canvas {
-            max-height: 220px !important; /* 同步放大繪製區域 */
+            max-height: 220px !important;
             width: 100% !important;
         }
 
@@ -334,26 +334,29 @@
         /* 列印專用純文字區塊預設隱藏 */
         .only-print { display: none; white-space: pre-wrap; font-size: 13px; line-height: 1.5; padding: 4px; border: 1px solid #dcdfe6; border-radius: 6px; min-height: 60px; }
 
-        /* 高質感 1 頁 A4 列印樣式 (極致壓縮版) */
-        @page { size: A4 portrait; margin: 6mm; }
+        /* =========================================
+           高質感 1 頁 A4 列印樣式 (解決空白第二頁版) 
+           ========================================= */
+        @page { size: A4 portrait; margin: 5mm; }
         @media print {
             /* 列印時隱藏輸入框與所有按鈕、標籤，只顯示純文字區塊 */
             .no-print { display: none !important; }
-            .only-print { display: block !important; border: none !important; padding: 0 !important; font-size: 11px !important; }
+            .only-print { display: block !important; border: none !important; padding: 0 !important; font-size: 11.5px !important; margin-bottom: 0 !important; }
             
-            body { background-color: #ffffff !important; padding: 0 !important; margin: 0 !important; -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
-            .container { box-shadow: none !important; padding: 0 !important; max-width: 100% !important; width: 100% !important; }
+            /* 【核心關鍵】：使用 zoom 微縮版面 5%，解決那多出 1~2px 導致的空白第二頁問題 */
+            body { zoom: 0.95; background-color: #ffffff !important; padding: 0 !important; margin: 0 !important; -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+            .container { box-shadow: none !important; padding: 0 !important; max-width: 100% !important; width: 100% !important; margin: 0 !important; }
             
             /* 隱藏標籤與按鈕 */
             .btn-rewrite, .btn-submit, .btn-reset, .button-group, .tag-category-title, .tag-container, .btn-help-inline { display: none !important; }
             
-            h1 { margin: 0 0 6px 0 !important; font-size: 16px !important; padding-bottom: 2px !important; border-bottom-width: 1px !important; }
-            .section-title { margin: 8px 0 4px 0 !important; padding: 2px 6px !important; font-size: 12px !important; }
+            h1 { margin: 0 0 4px 0 !important; font-size: 16px !important; padding-bottom: 2px !important; border-bottom-width: 1px !important; }
+            .section-title { margin: 6px 0 4px 0 !important; padding: 2px 6px !important; font-size: 12px !important; }
             .three-column-grid { display: grid !important; grid-template-columns: repeat(3, 1fr) !important; gap: 6px !important; margin-bottom: 6px !important; }
             .mini-card { padding: 6px !important; }
             
             /* 第一區塊：同列顯示與對齊 */
-            .form-grid { display: flex !important; justify-content: flex-start !important; gap: 8px !important; align-items: flex-end !important; }
+            .form-grid { display: flex !important; justify-content: flex-start !important; gap: 8px !important; align-items: flex-end !important; margin-bottom: 0 !important; }
             
             /* 去除所有邊框，純文字顯示 */
             input, select, textarea {
@@ -375,10 +378,10 @@
             /* 焦點學習框維持純文字高度自動 */
             textarea.focus-display-input { resize: none !important; border: 1px solid #e2e8f0 !important; padding: 2px !important; font-size: 9px !important; min-height: 24px !important; overflow: visible !important; }
             
-            /* 圖表壓縮與最大化設定 */
-            .chart-box { height: 160px !important; padding: 4px !important; justify-content: flex-start !important; }
+            /* 圖表壓縮設定，讓出一點點空間給下方的綜合評語 */
+            .chart-box { height: 155px !important; padding: 4px !important; justify-content: flex-start !important; margin-bottom: 0 !important;}
             .chart-box h4 { margin: 0 0 2px 0 !important; font-size: 11px !important; }
-            .chart-box canvas { max-height: 140px !important; width: 100% !important; margin-top: 0 !important; }
+            .chart-box canvas { max-height: 135px !important; width: 100% !important; margin-top: 0 !important; }
         }
     </style>
 </head>
@@ -421,7 +424,6 @@
                 </div>
                 <div class="form-group" style="flex: 1; min-width: 110px;">
                     <label for="enrollDuration">在學期間</label>
-                    <!-- 預設值改為"自動計算" -->
                     <input type="text" id="enrollDuration" value="自動計算" readonly style="background-color: #f8fafc; color: #a0aec0;">
                 </div>
             </div>
@@ -610,7 +612,7 @@
                 </div>
             </div>
 
-            <!-- 各科獨立學習走勢圖表 (縮減上方間距 15px -> 5px) -->
+            <!-- 各科獨立學習走勢圖表 -->
             <div class="three-column-grid" style="margin-top: 5px;">
                 <div class="chart-box" id="chart_box_math">
                     <h4 style="margin:0 0 2px 0; font-size:13px; color:#00a0e9;">📈 數學進度發展與預測</h4>
